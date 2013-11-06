@@ -14,10 +14,6 @@ int SDL_main(int argc, char *argv[])
 			Render();
 	}
 
-
-q1301123421
-asdas
-axaxa	
 	//deInit();
 	exit(0);
 	return 0;
