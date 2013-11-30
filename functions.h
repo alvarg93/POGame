@@ -21,7 +21,6 @@ static int gamestate = 1;
 static bool buttons[5];
 static TTF_Font *font;
 
-//controls
 
 
 int Init();
