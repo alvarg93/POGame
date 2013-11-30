@@ -1,4 +1,3 @@
-
 //Player Hero;
 //vector <StaticObject> SO;
 //vector <AICharacter> E;
