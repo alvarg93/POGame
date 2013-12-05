@@ -1,4 +1,5 @@
-#include "visableobjects.h"
+#include "visibleobjects.h"
+#include <SDL.h>
 #include <vector>
 #include<time.h>
 using namespace std;
@@ -50,6 +51,19 @@ bool Collide(int x1,int y1,int x2,int y2,int a1,int b1,int a2,int b2)
 	return false;
 }
 
+VisibleObject::VisibleObject(int x,int y,int w,int h, int texture)  {this->x=x;this->y=y;this->w=w;this->h=h;this->texture=texture;};
+
+StaticObject::StaticObject(int x,int y,int w,int h, int texture) : VisibleObject(x,y,w,h,texture) {};
+
+VisibleObject::VisibleObject(){this->x=0;this->y=0;this->w=0;this->h=0;this->texture=0;};
+StaticObject::StaticObject() : VisibleObject(){};
+
+int VisibleObject::Texture(int text)
+{
+	if(text>=0)	this->texture=text;
+	return this->texture;
+}
+
 void VisibleObject::SetPos(int x,int y)
 {
 	this->x = x;
@@ -67,19 +81,24 @@ void VisibleObject::GetPos(int *x,int *y)
 	*x = this->x;
 	*y = this->y;
 }
-void VisibleObject::GetPos(int *x1,int *y1,int *x2,int *y2)
+void VisibleObject::GetPos(int *x1,int *y1,int *w,int *h)
 {
 	*x1 = this->x;
 	*y1 = this->y;
-	*x2 = this->x + this->w;
-	*y2 = this->y + this->h;
+	*w = this->w;
+	*h = this->h;
 }
 void VisibleObject::SetSize(int w,int h)
 {
 	this->w = w;
 	this->h = h;
 }
+ void VisibleObject::Display(SDL_Renderer *renderer, SDL_Texture **textures)
+{
+	SDL_Rect pos={this->x,this->y,this->w,this->h};
+	SDL_RenderCopy(renderer,textures[texture],&pos,&pos);
 
+}
 void StaticObject::SetType(int t){this->type = t;}
 void StaticObject::GetType(int *t){*t = this->type;}
 
