@@ -178,72 +178,6 @@ int Init()
 	return 4;
 	}
 
-	font = TTF_OpenFont("arial.ttf", 30);
-
-	for(int i=0;i<5;i++)
-		buttons[i]=false;
-
-	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-	Mix_Music *mus = Mix_LoadMUS("sounds/mohicans.mp3");
-	music[0]=mus;
-	SDL_Surface *tempimg = IMG_Load("textures/bg1.png");
-	textures[0] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/bg2.png");
-	textures[1] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/bgmenu.png");
-	textures[2] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block1.png");
-	textures[3] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block2.png");
-	textures[4] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block3.png");
-	textures[5] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block4.png");
-	textures[6] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block5.png");
-	textures[7] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block6.png");
-	textures[8] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block7.png");
-	textures[9] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block8.png");
-	textures[10] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block9.png");
-	textures[11] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block10.png");
-	textures[12] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block11.png");
-	textures[13] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block12.png");
-	textures[14] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block13.png");
-	textures[15] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block14.png");
-	textures[16] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block15.png");
-	textures[17] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-	tempimg = IMG_Load("textures/block16.png");
-	textures[18] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
-	SDL_FreeSurface(tempimg);
-
 	return 0;
 }
 
@@ -252,7 +186,7 @@ int deInit()
 	Mix_FreeMusic(music[0]);
 	Mix_CloseAudio();
 
-	for(int i=0;i<NUM_OF_OBJ;i++)
+	for(int i=0;i<num_of_text;i++)
 		SDL_DestroyTexture(textures[i]);
 	
 	TTF_CloseFont(font);
@@ -324,7 +258,98 @@ void HandleMouseBtnUp(Uint8 button)
 
 void StartEngine()
 {
-	
+	font = TTF_OpenFont("arial.ttf", 30);
+
+	for(int i=0;i<5;i++)
+		buttons[i]=false;
+
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	Mix_Music *mus = Mix_LoadMUS("sounds/mohicans.mp3");
+	music[0]=mus;
+
+	int i=0;
+	SDL_Surface *tempimg = IMG_Load("textures/menu.jpg");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/bg1.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/bg2.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/bgmenu.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block1.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block2.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block3.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block4.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block5.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block6.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block7.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block8.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block9.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block10.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block11.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block12.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block13.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block14.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block15.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+	tempimg = IMG_Load("textures/block16.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
+
+	num_of_text=i;
 	Mix_PlayMusic(music[0], -1);
 	
 	for(int i=0;i<NUM_OF_OBJ;i++)objects[i]=NULL;
@@ -348,7 +373,10 @@ void DoEngine()
 	switch(gamestate)
 	{
 	case 1:
-		if(prevstate!=gamestate);
+		if(prevstate!=gamestate)
+		{
+			Mix_PlayMusic(music[0], -1);	
+		};
 		break;
 	case 2:
 		{
@@ -372,24 +400,21 @@ void DoEngine()
 }
 void Render()
 {
+	SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+	SDL_RenderClear(sdlRenderer);
 	switch(gamestate)
 	{
 	case 1:
 		{
 			
-			SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-			SDL_RenderClear(sdlRenderer);
 			SDL_Rect background = {0,100,screen_width,screen_height-200};
-			SDL_Surface *menuback = IMG_Load("Images/menu.jpg");
-			SDL_Texture *texture = SDL_CreateTextureFromSurface(sdlRenderer, menuback);
-			SDL_FreeSurface(menuback);
 			/*SDL_Rect fillRect = { 200, 200, 400, 400};
 			SDL_SetRenderDrawColor( sdlRenderer, 0xFF, 0x00, 0x00, 0xFF );		
 			SDL_RenderFillRect( sdlRenderer, &fillRect );
 			SDL_Rect outlineRect = { 600, 600, 100, 100};
 			SDL_SetRenderDrawColor( sdlRenderer, 0x00, 0xFF, 0x00, 0xFF );		
 			SDL_RenderDrawRect( sdlRenderer, &outlineRect );*/
-			SDL_RenderCopy(sdlRenderer,texture,&background,&background);
+			SDL_RenderCopy(sdlRenderer,textures[0],&background,&background);
 			/*
 			przycisk.display(sdlRenderer, font);
 			przycisk.click(msx,msy, buttons);
@@ -429,15 +454,12 @@ void Render()
 			SDL_DestroyTexture(lodt);
 			SDL_DestroyTexture(crdt);
 			SDL_DestroyTexture(qutt);
-			SDL_DestroyTexture(texture);
 		};
 		break;
 	case 2:
 		{	
-			SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-			SDL_RenderClear(sdlRenderer);
 			SDL_Rect background = {0,0,screen_width,screen_height};
-			SDL_RenderCopy(sdlRenderer,textures[0],&background,&background);
+			SDL_RenderCopy(sdlRenderer,textures[1],&background,&background);
 			for(int i=0;i<NUM_OF_OBJ;i++)
 				if(objects[i]!=NULL){
 					int x,y,w,h;
@@ -455,10 +477,6 @@ void Render()
 				
 		
 
-
-	default:
-		SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-		SDL_RenderClear(sdlRenderer);
 	};
 	SDL_RenderPresent(sdlRenderer);
 }
