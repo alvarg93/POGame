@@ -2,27 +2,31 @@
 #include "classes.h"
 
 
-Button przycisk = Button("przycisk",100,100,200,50);
-CheckBox przycisk2 = CheckBox("przycisk 2",320,100,20,20);
-RadioBoxMenu menu = RadioBoxMenu("menu1",800,500,200,35,3);
+//Button przycisk = Button("przycisk",100,100,200,50);
+//CheckBox przycisk2 = CheckBox("przycisk 2",320,100,20,20);
+//RadioBoxMenu menu = RadioBoxMenu("menu1",800,500,200,35,3);
+VisibleObject *objects[NUM_OF_OBJ];
+int numofobj=0;
+std::fstream levels[10];
+
 
 int SDL_main(int argc, char *argv[])
 {
 	Init();
+	StartEngine();
 	quit=false;
 	while (!quit) {
 			WaitFrame(FPS);
 			KeyHandler();
 			ProcessEvents();
 			DoEngine();
-			Render(gamestate);
+			Render();
 
 			//Clear screen
 
 				//Render red filled quad
 				
-
-				buttons[0]=false;
+			buttons[0]=false;
 	}
 
 
@@ -44,6 +48,15 @@ void ProcessEvents()
 		case SDL_MOUSEMOTION:
 			msx=event.motion.x;
 			msy=event.motion.y;
+			msxrel=event.motion.xrel;
+			msyrel=event.motion.yrel;
+			if((gamestate==1)&&((msxrel)||(msyrel)))
+			{
+				if(msy<533)mainmenu=0;
+				else if((msy>=533)&&(msy<568))mainmenu=1;
+				else if((msy>=560)&&(msy<603))mainmenu=2;
+				else if(msy>=603) mainmenu=3;
+			};
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
@@ -64,35 +77,69 @@ void ProcessEvents()
 
 void KeyHandler(){
 	//klawiatura
+	int a=5;
 	keys = SDL_GetKeyboardState(NULL);
-	//switch(gamestate)
-	if(keys[SDLK_RIGHT])
+	if(keys[SDL_SCANCODE_RIGHT])
 	{
-		
+		if(gamestate==2){
+			map_offset.x+=10;
+		}
+	}
+			
+	if(keys[SDL_SCANCODE_LEFT])
+	{
+		if(gamestate==2){
+			map_offset.x=Max(0,map_offset.x-10);
+		}
 	}
 
-	if(keys[SDLK_LEFT])
+	if(keys[SDL_SCANCODE_UP])
 	{
-		
+		if(gamestate==1){
+		mainmenu--;
+		mainmenu=Max(0,mainmenu);
+		}
+
+		if(gamestate==2){
+			map_offset.y-=10;
+
+		}
 	}
 
-	if(keys[SDLK_UP])
+	if(keys[SDL_SCANCODE_DOWN])
 	{
-		
+		if(gamestate==1){
+		mainmenu++;
+		mainmenu=Min(3,mainmenu);
+		}
+
+		if(gamestate==2){
+			map_offset.y+=10;
+		}
 	}
 
-	if(keys[SDLK_DOWN])
+	if(keys[SDL_SCANCODE_RETURN])
 	{
-		
+		if(gamestate==1)
+			switch(mainmenu)
+		{
+			case 0:
+				gamestate=2;
+				break;
+			case 3:
+				quit=true;
+				break;
+
+		}
+
+
 	}
-	if(keys[SDLK_a])
-	{
-		
-	}
+
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
 		quit=true;
 	}
+	
 }
 
 int Init()
@@ -136,12 +183,75 @@ int Init()
 	for(int i=0;i<5;i++)
 		buttons[i]=false;
 
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	Mix_Music *mus = Mix_LoadMUS("sounds/mohicans.mp3");
+	music[0]=mus;
+	SDL_Surface *tempimg = IMG_Load("textures/bg1.png");
+	textures[0] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/bg2.png");
+	textures[1] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/bgmenu.png");
+	textures[2] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block1.png");
+	textures[3] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block2.png");
+	textures[4] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block3.png");
+	textures[5] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block4.png");
+	textures[6] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block5.png");
+	textures[7] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block6.png");
+	textures[8] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block7.png");
+	textures[9] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block8.png");
+	textures[10] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block9.png");
+	textures[11] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block10.png");
+	textures[12] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block11.png");
+	textures[13] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block12.png");
+	textures[14] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block13.png");
+	textures[15] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block14.png");
+	textures[16] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block15.png");
+	textures[17] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	tempimg = IMG_Load("textures/block16.png");
+	textures[18] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
 
 	return 0;
 }
 
 int deInit()
 {
+	Mix_FreeMusic(music[0]);
+	Mix_CloseAudio();
+	
 	TTF_CloseFont(font);
 	Mix_Quit();
 	TTF_Quit();
@@ -196,39 +306,128 @@ void HandleMouseBtnUp(Uint8 button)
 
 void StartEngine()
 {
+	
+	Mix_PlayMusic(music[0], -1);
+	
+	for(int i=0;i<NUM_OF_OBJ;i++)objects[i]=NULL;
 
+	levels[0].open("level1.txt",std::fstream::in);
+	int j=0;
+	int back;
+	levels[0]>>back;
+	int x,y,tex;
+	while((!levels[0].eof())&&(j<NUM_OF_OBJ))
+	{	
+		levels[0]>>x>>y>>tex;
+		objects[j]=new StaticObject(x,y,45,45,tex);
+		j++;
+	}
 }
 
 void DoEngine()
 {
+	int temp=gamestate;
+	switch(gamestate)
+	{
+	case 1:
+		if(prevstate!=gamestate);
+		break;
+	case 2:
+		{
+			if(prevstate!=gamestate);
+			
+		};
+		break;
+	case 3:
+		if(prevstate!=gamestate);
+		break;
+	case 4:
+		if(prevstate!=gamestate);
+		break;
+	default: quit=true;
 
+	}
+	prevstate=temp;
 }
-void Render(int gamestate)
+void Render()
 {
 	switch(gamestate)
 	{
 	case 1:
 		{
+			
 			SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 			SDL_RenderClear(sdlRenderer);
 			SDL_Rect background = {0,100,screen_width,screen_height-200};
 			SDL_Surface *menuback = IMG_Load("Images/menu.jpg");
-			SDL_Texture * texture = SDL_CreateTextureFromSurface(sdlRenderer, menuback);
+			SDL_Texture *texture = SDL_CreateTextureFromSurface(sdlRenderer, menuback);
 			SDL_FreeSurface(menuback);
+			/*SDL_Rect fillRect = { 200, 200, 400, 400};
+			SDL_SetRenderDrawColor( sdlRenderer, 0xFF, 0x00, 0x00, 0xFF );		
+			SDL_RenderFillRect( sdlRenderer, &fillRect );
+			SDL_Rect outlineRect = { 600, 600, 100, 100};
+			SDL_SetRenderDrawColor( sdlRenderer, 0x00, 0xFF, 0x00, 0xFF );		
+			SDL_RenderDrawRect( sdlRenderer, &outlineRect );*/
 			SDL_RenderCopy(sdlRenderer,texture,&background,&background);
-			
+			/*
 			przycisk.display(sdlRenderer, font);
 			przycisk.click(msx,msy, buttons);
 			przycisk2.display(sdlRenderer, font);
 			przycisk2.click(msx,msy, buttons);
 			menu.display(sdlRenderer, font);
 			menu.click(msx,msy,buttons);
-
-			SDL_RenderPresent( sdlRenderer );
+			*/
+			SDL_Rect newgame = { 100, 500, 150, 30};
+			SDL_Rect loadgame = { 100, 535, 150, 30};
+			SDL_Rect credits = { 100, 570, 100, 30};
+			SDL_Rect quitgame = { 100, 605, 150, 30};
+			SDL_Color color = {255,255,255};
+			SDL_Color color2= {255,255,0};
+			SDL_Color colr1,colr2,colr3,colr4;
+			colr1=((mainmenu==0) ? color2 : color);
+			colr2=((mainmenu==1) ? color2 : color);
+			colr3=((mainmenu==2) ? color2 : color);
+			colr4=((mainmenu==3) ? color2 : color);
+			SDL_Surface *newg = TTF_RenderText_Solid(font, "New Game", colr1);
+			SDL_Surface *lodg = TTF_RenderText_Solid(font, "Load Game", colr2);
+			SDL_Surface *cred = TTF_RenderText_Solid(font, "Credits", colr3);
+			SDL_Surface *quit = TTF_RenderText_Solid(font, "Quit Game", colr4);
+			SDL_Texture * newt = SDL_CreateTextureFromSurface(sdlRenderer, newg);
+			SDL_Texture * lodt = SDL_CreateTextureFromSurface(sdlRenderer, lodg);
+			SDL_Texture * crdt = SDL_CreateTextureFromSurface(sdlRenderer, cred);
+			SDL_Texture * qutt = SDL_CreateTextureFromSurface(sdlRenderer, quit);
+			SDL_FreeSurface(newg);
+			SDL_FreeSurface(lodg);
+			SDL_FreeSurface(cred);
+			SDL_FreeSurface(quit);
+			SDL_RenderCopy(sdlRenderer,newt,NULL,&newgame);
+			SDL_RenderCopy(sdlRenderer,lodt,NULL,&loadgame);
+			SDL_RenderCopy(sdlRenderer,crdt,NULL,&credits);
+			SDL_RenderCopy(sdlRenderer,qutt,NULL,&quitgame);
+			SDL_DestroyTexture(newt);
+			SDL_DestroyTexture(lodt);
+			SDL_DestroyTexture(crdt);
+			SDL_DestroyTexture(qutt);
 			SDL_DestroyTexture(texture);
 		};
 		break;
+	case 2:
+		{	
+			SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+			SDL_RenderClear(sdlRenderer);
+			SDL_Rect background = {0,0,screen_width,screen_height};
+			SDL_RenderCopy(sdlRenderer,textures[0],&background,&background);
+			for(int i=0;i<NUM_OF_OBJ;i++)
+				if(objects[i]!=NULL){
+					int x,y,w,h;
+					objects[i]->GetPos(&x,&y,&w,&h);
+					SDL_Rect pos={x-map_offset.x,y-map_offset.y,w,h};
+					SDL_RenderCopy(sdlRenderer,textures[objects[i]->Texture(-1)],NULL,&pos);
+				}
 
+			
+		};
+		break;
 
 				
 				
@@ -239,6 +438,6 @@ void Render(int gamestate)
 	default:
 		SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 		SDL_RenderClear(sdlRenderer);
-		SDL_RenderPresent( sdlRenderer );
 	};
+	SDL_RenderPresent(sdlRenderer);
 }
