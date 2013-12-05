@@ -26,7 +26,7 @@ int SDL_main(int argc, char *argv[])
 
 				//Render red filled quad
 				
-			buttons[0]=false;
+			
 	}
 
 
@@ -137,7 +137,7 @@ void KeyHandler(){
 
 	if(keys[SDL_SCANCODE_ESCAPE])
 	{
-		quit=true;
+		if(gamestate==2)gamestate=1;
 	}
 	
 }
@@ -251,6 +251,9 @@ int deInit()
 {
 	Mix_FreeMusic(music[0]);
 	Mix_CloseAudio();
+
+	for(int i=0;i<NUM_OF_OBJ;i++)
+		SDL_DestroyTexture(textures[i]);
 	
 	TTF_CloseFont(font);
 	Mix_Quit();
@@ -284,6 +287,21 @@ void HandleMouseBtnDown(Uint8 button)
 	if(button==SDL_BUTTON_LEFT){
 		buttons[0]=true;
 		
+		if(gamestate==1)
+		{
+			switch(mainmenu)
+			{
+			case 0:
+				gamestate=2;
+				break;
+			case 3:
+				quit=true;
+				break;
+
+			}
+		}
+
+
 	}
 
 	if(button==SDL_BUTTON_RIGHT) 
@@ -334,7 +352,10 @@ void DoEngine()
 		break;
 	case 2:
 		{
-			if(prevstate!=gamestate);
+			if(prevstate!=gamestate)
+				{
+			Mix_HaltMusic();		
+			};
 			
 		};
 		break;
