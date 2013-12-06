@@ -81,13 +81,19 @@ void VisibleObject::GetPos(int *x,int *y)
 	*x = this->x;
 	*y = this->y;
 }
-void VisibleObject::GetPos(int *x1,int *y1,int *w,int *h)
+void VisibleObject::GetPos(int *x1,int *y1,int *x2,int *y2)
 {
 	*x1 = this->x;
 	*y1 = this->y;
-	*w = this->w;
-	*h = this->h;
+	*x2 = this->w+*x1;
+	*y2 = this->h+*y1;
 }
+
+SDL_Rect VisibleObject::Measures()
+{
+	SDL_Rect r={this->x,this->y,this->w,this->h};
+}
+
 void VisibleObject::SetSize(int w,int h)
 {
 	this->w = w;
@@ -220,7 +226,7 @@ bool Projectile::BOOM()
 	int x1,x2,y1,y2;
 	int a1,a2,b1,b2;
 	this->GetPos(&x1,&y1,&x2,&y2);
-	
+
 	Hero.GetPos(&a1,&b1,&a2,&b2);
 	if(!(this->player) && Collide(x1,y1,x2,y2,a1,b1,a2,b2))
 	{
