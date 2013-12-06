@@ -462,9 +462,10 @@ void Render()
 			SDL_RenderCopy(sdlRenderer,textures[1],&background,&background);
 			for(int i=0;i<NUM_OF_OBJ;i++)
 				if(objects[i]!=NULL){
-					int x,y,w,h;
-					objects[i]->GetPos(&x,&y,&w,&h);
-					SDL_Rect pos={x-map_offset.x,y-map_offset.y,w,h};
+					
+					SDL_Rect pos=objects[i]->Measures();
+					pos.x-=map_offset.x;
+					pos.y-=map_offset.y;
 					SDL_RenderCopy(sdlRenderer,textures[objects[i]->Texture(-1)],NULL,&pos);
 				}
 
