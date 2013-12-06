@@ -408,12 +408,6 @@ void Render()
 		{
 			
 			SDL_Rect background = {0,100,screen_width,screen_height-200};
-			/*SDL_Rect fillRect = { 200, 200, 400, 400};
-			SDL_SetRenderDrawColor( sdlRenderer, 0xFF, 0x00, 0x00, 0xFF );		
-			SDL_RenderFillRect( sdlRenderer, &fillRect );
-			SDL_Rect outlineRect = { 600, 600, 100, 100};
-			SDL_SetRenderDrawColor( sdlRenderer, 0x00, 0xFF, 0x00, 0xFF );		
-			SDL_RenderDrawRect( sdlRenderer, &outlineRect );*/
 			SDL_RenderCopy(sdlRenderer,textures[0],&background,&background);
 			/*
 			przycisk.display(sdlRenderer, font);
