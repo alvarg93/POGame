@@ -18,7 +18,8 @@ public:
         void SetPos(int x,int y);
         void SetPos(int x1,int y1, int x2, int y2); 
         void GetPos(int *x,int *y);
-        void GetPos(int *x1, int *y1, int *w, int *h);
+        void GetPos(int *x1, int *y1, int *x2, int *y2);
+		SDL_Rect Measures();
         void SetSize(int w,int h);
         void Display(SDL_Renderer *renderer, SDL_Texture **textures);
 };
