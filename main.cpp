@@ -1,11 +1,8 @@
 #include "functions.h"
 #include "classes.h"
 
-
-//Button przycisk = Button("przycisk",100,100,200,50);
-//CheckBox przycisk2 = CheckBox("przycisk 2",320,100,20,20);
-//RadioBoxMenu menu = RadioBoxMenu("menu1",800,500,200,35,3);
 VisibleObject *objects[NUM_OF_OBJ];
+VisibleObject *player;
 int numofobj=0;
 std::fstream levels[10];
 
@@ -67,6 +64,15 @@ void ProcessEvents()
 			HandleMouseBtnUp(event.button.button);
 			break;
 
+		case SDL_KEYDOWN:
+			if(gamestate==1)
+			{
+				if(event.key.keysym.sym==SDLK_DOWN)mainmenu=Min(3,mainmenu+1);
+				if(event.key.keysym.sym==SDLK_UP)mainmenu=Max(0,mainmenu-1);
+
+			};
+			break;
+
 		case SDL_QUIT:
 			quit=true;
 			break;
@@ -95,10 +101,6 @@ void KeyHandler(){
 
 	if(keys[SDL_SCANCODE_UP])
 	{
-		if(gamestate==1){
-		mainmenu--;
-		mainmenu=Max(0,mainmenu);
-		}
 
 		if(gamestate==2){
 			map_offset.y-=10;
@@ -108,10 +110,6 @@ void KeyHandler(){
 
 	if(keys[SDL_SCANCODE_DOWN])
 	{
-		if(gamestate==1){
-		mainmenu++;
-		mainmenu=Min(3,mainmenu);
-		}
 
 		if(gamestate==2){
 			map_offset.y+=10;
@@ -348,6 +346,10 @@ void StartEngine()
 	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
 	SDL_FreeSurface(tempimg);
 	i++;
+	tempimg = IMG_Load("textures/knight_6.png");
+	textures[i] = SDL_CreateTextureFromSurface(sdlRenderer, tempimg);
+	SDL_FreeSurface(tempimg);
+	i++;
 
 	num_of_text=i;
 	Mix_PlayMusic(music[0], -1);
@@ -362,9 +364,15 @@ void StartEngine()
 	while((!levels[0].eof())&&(j<NUM_OF_OBJ))
 	{	
 		levels[0]>>x>>y>>tex;
-		objects[j]=new StaticObject(x,y,45,45,tex);
+		objects[j]=new StaticObject(x,y,45,45,tex+3);
 		j++;
 	}
+
+	player=new Player();
+
+	player->Texture(20);
+	player->SetPos(100,200,170,190);
+
 }
 
 void DoEngine()
@@ -375,7 +383,7 @@ void DoEngine()
 	case 1:
 		if(prevstate!=gamestate)
 		{
-			Mix_PlayMusic(music[0], -1);	
+			Mix_PlayMusic(music[0], -1);
 		};
 		break;
 	case 2:
@@ -409,14 +417,6 @@ void Render()
 			
 			SDL_Rect background = {0,100,screen_width,screen_height-200};
 			SDL_RenderCopy(sdlRenderer,textures[0],&background,&background);
-			/*
-			przycisk.display(sdlRenderer, font);
-			przycisk.click(msx,msy, buttons);
-			przycisk2.display(sdlRenderer, font);
-			przycisk2.click(msx,msy, buttons);
-			menu.display(sdlRenderer, font);
-			menu.click(msx,msy,buttons);
-			*/
 			SDL_Rect newgame = { 100, 500, 150, 30};
 			SDL_Rect loadgame = { 100, 535, 150, 30};
 			SDL_Rect credits = { 100, 570, 100, 30};
@@ -461,8 +461,10 @@ void Render()
 					pos.x-=map_offset.x;
 					pos.y-=map_offset.y;
 					SDL_RenderCopy(sdlRenderer,textures[objects[i]->Texture(-1)],NULL,&pos);
-				}
-
+				};
+			SDL_Rect pos=player->Measures();
+			SDL_Rect pos2={0,0,70,90};
+			SDL_RenderCopy(sdlRenderer,textures[player->Texture(-1)],&pos2,&pos);
 			
 		};
 		break;
