@@ -18,18 +18,8 @@ int SDL_main(int argc, char *argv[])
 			ProcessEvents();
 			DoEngine();
 			Render();
-
-			//Clear screen
-
-				//Render red filled quad
-				
-			
 	}
 
-
-
-
-	
 	deInit();
 	return 0;
 }
